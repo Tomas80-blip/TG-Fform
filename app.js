@@ -40,6 +40,9 @@ Jeigu isLoggedIn statusas yra false, tuomet h1 tekstas turi būti logout metodo 
 Kiekvieną kartą paspaudus formos submit mygtuką visas papildomas tekstas turi išsivalyti.
 */
 
+
+const form = document.querySelector('form');
+
 // User klasė
 class User {
     constructor(name, email) {
@@ -65,6 +68,7 @@ class User {
 function renderMessage(user, message) {
     message.innerHTML = ''; // Išvalome prieš tai buvusius elementus
 
+    // jei juseris prisijunges
     if (user.isLoggedIn) {
         const h1 = document.createElement('h1');
         h1.textContent = user.login();
@@ -80,6 +84,7 @@ function renderMessage(user, message) {
         // Pasitikriname konsolėje
          console.log(user);
     } else {
+        // jei juseris neprisijunges
         const h1 = document.createElement('h1');
         h1.textContent = user.logout();
         message.appendChild(h1);
@@ -88,27 +93,23 @@ function renderMessage(user, message) {
     }
 }
 
-// Formos įvykio apdorojimas
-document.querySelector('form').addEventListener('submit', (event) => {
+// Formos įvykio apdorojimas, event liseneris formos submitui
+form.addEventListener('submit', (event) => {
     event.preventDefault(); // Sustabdyti naršyklės persikrovimą
     //trim kad nutrinti tarpelius iš priekio ir galo
     const name = event.target.name.value.trim();
     const email = event.target.email.value.trim();
-  
-    if (name && email) {
-        // Sukuriame naują vartotojo objektą
-        const user = new User(name, email);
+        
+    // Sukuriame naują vartotojo objektą
+    const user = new User(name, email);
 
-        // Išsaugome vartotojo duomenis į localStorage string formatu
-        localStorage.setItem('user', JSON.stringify(user));
+    // Išsaugome vartotojo duomenis į localStorage string formatu
+     localStorage.setItem('user', JSON.stringify(user));
 
-        // Pakeičiame isLoggedIn statusą
-        user.toggleLoginStatus();
+    // Pakeičiame isLoggedIn statusą
+    user.toggleLoginStatus();
 
-        // Atvaizduojame informaciją
-        const message = document.querySelector('.message');
-        renderMessage(user, message);
-    } else {
-        alert('Please fill in all fields!');
-    }
+     // Atvaizduojame informaciją
+    const message = document.querySelector('.message');
+    renderMessage(user, message);  
 });
