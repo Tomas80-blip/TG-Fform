@@ -96,10 +96,11 @@ function renderMessage(user, message) {
 // Formos įvykio apdorojimas, event liseneris formos submitui
 form.addEventListener('submit', (event) => {
     event.preventDefault(); // Sustabdyti naršyklės persikrovimą
+
     //trim kad nutrinti tarpelius iš priekio ir galo
     const name = event.target.name.value.trim();
     const email = event.target.email.value.trim();
-        
+
     // Sukuriame naują vartotojo objektą
     const user = new User(name, email);
 
@@ -111,5 +112,5 @@ form.addEventListener('submit', (event) => {
 
      // Atvaizduojame informaciją
     const message = document.querySelector('.message');
-    renderMessage(user, message);  
+    renderMessage(user, message);
 });
