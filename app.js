@@ -43,7 +43,6 @@ Kiekvieną kartą paspaudus formos submit mygtuką visas papildomas tekstas turi
 
 const form = document.querySelector('form');
 
-// User klasė
 class User {
     constructor(name, email) {
         this.name = name;
@@ -64,11 +63,10 @@ class User {
     }
 }
 
-// Funkcija atvaizduoti pranešimą HTML'e
-function renderMessage(user, message) {
-    message.innerHTML = ''; // Išvalome prieš tai buvusius elementus
 
-    // jei juseris prisijunges
+function renderMessage(user, message) {
+    message.innerHTML = '';
+    
     if (user.isLoggedIn) {
         const h1 = document.createElement('h1');
         h1.textContent = user.login();
@@ -77,40 +75,29 @@ function renderMessage(user, message) {
         button.textContent = 'Logout';
         button.addEventListener('click', () => {
             user.toggleLoginStatus();
-            renderMessage(user, message); // Atnaujinti pranešimą
+            renderMessage(user, message);
         });
         
-        message.append(h1, button);
-        // Pasitikriname konsolėje
+        message.append(h1, button);       
          console.log(user);
     } else {
-        // jei juseris neprisijunges
         const h1 = document.createElement('h1');
         h1.textContent = user.logout();
-        message.appendChild(h1);
-       // Pasitikriname konsolėje
+        message.appendChild(h1);       
         console.log(user);
     }
 }
 
-// Formos įvykio apdorojimas, event liseneris formos submitui
-form.addEventListener('submit', (event) => {
-    event.preventDefault(); // Sustabdyti naršyklės persikrovimą
 
-    //trim kad nutrinti tarpelius iš priekio ir galo
+form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    
     const name = event.target.name.value.trim();
     const email = event.target.email.value.trim();
 
-    // Sukuriame naują vartotojo objektą
-    const user = new User(name, email);
-
-    // Išsaugome vartotojo duomenis į localStorage string formatu
-     localStorage.setItem('user', JSON.stringify(user));
-
-    // Pakeičiame isLoggedIn statusą
-    user.toggleLoginStatus();
-
-     // Atvaizduojame informaciją
+    const user = new User(name, email);    
+     localStorage.setItem('user', JSON.stringify(user));    
+    user.toggleLoginStatus();    
     const message = document.querySelector('.message');
     renderMessage(user, message);
 });
